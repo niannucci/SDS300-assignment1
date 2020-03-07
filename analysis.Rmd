@@ -27,5 +27,6 @@ data <- data %>% sample_n(16)
 #find alpha while adjust for reverse scoring
 #low score correlates to no negative feelings about squirrels; high score hate squirrels 
 alpha(data %>% select(-explanation), keys = c(1, 1, -1, -1, 1, 1, 1, 1, -1))
+#code from: https://rpubs.com/hauselin/reliabilityanalysis
 ```
-
+Raw alpha and standard alpha both equal 0.88, suggesting high reliabiloty. 
