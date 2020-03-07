@@ -20,23 +20,40 @@ colnames(data) <- c("presence", "interaction", "life_affection", "sentiment", "v
 
 # taking a sample of 16 values
 set.seed(45)
-data <- data %>% sample_n(16)
+data <- data %>% 
+  select(-explanation) %>%
+  sample_n(16)
 ```
 
 score reliability 
 ```{r}
 #find alpha while adjust for reverse scoring
 #low score correlates to no negative feelings about squirrels; high score hate squirrels 
-alpha(data %>% select(-explanation), keys = c(1, 1, -1, -1, 1, 1, 1, 1, -1))
+alpha(data, keys = c(1, 1, -1, -1, 1, 1, 1, 1, -1))
 #code from: https://rpubs.com/hauselin/reliabilityanalysis
-splitHalf(data %>% select(-explanation))
+splitHalf(data)
 ```
 Raw alpha and standard alpha both equal 0.88, suggesting high reliabiloty. 
 
 
 item difficulty 
 ```{r}
+#find mean scores
+mdata <- round(colMeans(data), 2)
+colnames(mdata) <- c("question", "mean")
 
+#convert to dichotomous
+new_data <- lapply(data, mean)
+x <- list()
+
+
+if (new_data[["presence"]] > 3.5){
+  x[["presence"]] <- 1
+} else {
+  x[["presence"]] <- 0
+}
+
+#repeat for the rest of the questions
 ```
 
 item discrimination 
