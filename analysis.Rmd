@@ -12,15 +12,15 @@ library(psych)
 
 ```{r}
 # importing data
-raw_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9FlR9Jnryag3vJtrAD6O8vlkdO0jKpEUz2XHOCCDkc0DIqrNSgMyQUAM2RRfGFN8sxlbYSK64HAiH/pub?output=csv") %>%
+data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9FlR9Jnryag3vJtrAD6O8vlkdO0jKpEUz2XHOCCDkc0DIqrNSgMyQUAM2RRfGFN8sxlbYSK64HAiH/pub?output=csv") %>%
   dplyr::select(-Timestamp)
 
 # changing column names
-colnames(raw_data) <- c("presence", "interaction", "life_affection", "sentiment", "verbal_attack", "emotional_attack", "physical_attack", "thinking", "feel", "explanation")
+colnames(data) <- c("presence", "interaction", "life_affection", "sentiment", "verbal_attack", "emotional_attack", "physical_attack", "thinking", "feel", "explanation")
 
 # taking a sample of 16 values
 set.seed(45)
-data <- raw_data %>% 
+data <- data %>% 
   dplyr::select(-explanation) %>%
   sample_n(16)
 ```
@@ -84,6 +84,7 @@ item discrimination
 ```{r}
 tab_itemscale(data)
 ```
+The ones with negative correlations for discrimination have scales that go the "other way" compared to the other problems, so lower on scale means stronger feelings 
 
 validity
 ```{r}
