@@ -29,66 +29,18 @@ score reliability
 ```{r}
 #find alpha while adjust for reverse scoring
 #low score correlates to no negative feelings about squirrels; high score hate squirrels 
-alpha(data, keys = c(1, 1, -1, -1, 1, 1, 1, 1, -1))
+psych::alpha(data, keys = c(1, 1, -1, -1, 1, 1, 1, 1, -1))
 #code from: https://rpubs.com/hauselin/reliabilityanalysis
 splitHalf(data)
 ```
 Raw alpha and standard alpha both equal 0.88, suggesting high internal reliability. 
 
-
-item difficulty 
-```{r}
-#convert to dichotomous
-
-#presence
-data$presence_dich <- car::recode(data$presence, "0:3.5 = 0; 3.5:7 = 1")
-
-#interaction
-data$interaction_dich <- car::recode(data$interaction, "0:3.5 = 0; 3.5:7 = 1")
-
-#life_affection higher score correlates to unaffected, so switch scores 
-data$life_affection_dich <- car::recode(data$life_affection, "0:3.5 = 1; 3.5:7 = 0")
-
-#sentiment higher score correlates to unaffected, so switch scores
-data$sentiment_dich <- car::recode(data$sentiment, "0:3.5 = 1; 3.5:7 = 0")
-
-#verbal_attack
-data$verbal_attack_dich <- car::recode(data$verbal_attack, "0:3.5 = 0; 3.5:7 = 1")
-
-#emotional_attack
-data$emotional_attack_dich <- car::recode(data$emotional_attack, "0:3.5 = 0; 3.5:7 = 1")
-
-#physical_attack
-data$physical_attack_dich <- car::recode(data$physical_attack, "0:3.5 = 0; 3.5:7 = 1")
-
-#thinking
-data$thinking_dich <- car::recode(data$thinking, "0:3.5 = 0; 3.5:7 = 1")
-
-#feel higher score correlates to unaffected, so switch scores
-data$feel_dich <- car::recode(data$feel, "0:3.5 = 1; 3.5:7 = 0")
-
-
-dich_data <- data %>% 
-  dplyr::select(presence_dich, interaction_dich, life_affection_dich, sentiment_dich, verbal_attack_dich, emotional_attack_dich, physical_attack_dich, thinking_dich, feel_dich)
-
-#find mean of each column
-dich_mean_data <- lapply(dich_data, mean)
-dich_mean_data
-#these numbers correspond to difficulty
-
-
-```
-
-
 item difficulty and discrimination 
 ```{r}
 #account for reverse coded items
 key <- c(1, 1, -1, -1, 1, 1, 1, 1, -1)
-use_data <- data %>% 
-  dplyr::select(presence, interaction, life_affection, sentiment, verbal_attack,
-                emotional_attack, physical_attack, thinking, feel)
 
-adj_data <- as.data.frame(reverse.code(keys = key, items = use_data))
+adj_data <- as.data.frame(reverse.code(keys = key, items = data))
 tab_itemscale(adj_data)
 ```
 The ones with negative correlations for discrimination have scales that go the "other way" compared to the other problems, so lower on scale means stronger feelings 
